@@ -219,51 +219,112 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================
 // BOOKING FORM SUBMIT HANDLER
 // ============================================
-function handleBookingSubmit(e) {
+async function handleBookingSubmit(e) {
   e.preventDefault();
 
   const form = e.target;
-  const name = form.querySelector('#guestName').value;
-  const phone = form.querySelector('#guestPhone').value;
-  const email = form.querySelector('#guestEmail').value;
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const statusBox = document.getElementById('bookingFormStatus');
+  const originalHtml = submitBtn.innerHTML;
+
+  const name = form.querySelector('#guestName').value.trim();
+  const phone = form.querySelector('#guestPhone').value.trim();
+  const email = form.querySelector('#guestEmail').value.trim();
   const checkIn = form.querySelector('#checkIn').value;
   const checkOut = form.querySelector('#checkOut').value;
   const guests = form.querySelector('#numGuests').value;
   const rooms = form.querySelector('#numRooms').value;
-  const message = form.querySelector('#guestMessage').value;
+  const message = form.querySelector('#guestMessage').value.trim();
 
-  // Format the booking details
-  const bookingDetails = `
-Booking Request from ${name}
-Phone: ${phone}
-${email ? 'Email: ' + email : ''}
-Check-in: ${checkIn}
-Check-out: ${checkOut}
-Guests: ${guests}
-Rooms: ${rooms}
-${message ? 'Message: ' + message : ''}
-  `.trim();
+  // Validate dates
+  if (new Date(checkOut) <= new Date(checkIn)) {
+    if (statusBox) {
+      statusBox.style.display = 'block';
+      statusBox.style.backgroundColor = '#FEE2E2';
+      statusBox.style.color = '#991B1B';
+      statusBox.style.border = '1px solid #F87171';
+      statusBox.innerHTML = '⚠️ Check-out date must be after check-in date.';
+    } else {
+      alert('Check-out date must be after check-in date.');
+    }
+    return;
+  }
 
-  // Show confirmation (replace with actual form submission logic)
-  const submitBtn = form.querySelector('button[type="submit"]');
-  const originalText = submitBtn.innerHTML;
-  submitBtn.innerHTML = `
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="20 6 9 17 4 12"/></svg>
-    Request Sent!
-  `;
-  submitBtn.style.background = '#6B7F5E';
+  // Show loading UI
   submitBtn.disabled = true;
+  submitBtn.innerHTML = `
+    <svg class="spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" style="animation: spin 1s linear infinite; vertical-align: middle; margin-right: 8px;">
+      <circle cx="12" cy="12" r="10" stroke-dasharray="30 60"></circle>
+    </svg>
+    Sending Request...
+  `;
+  if (statusBox) {
+    statusBox.style.display = 'none';
+  }
 
-  // Log the booking details to console for development
-  console.log('Booking Request:', bookingDetails);
+  const payload = {
+    "Guest Name": name,
+    "Phone Number": phone,
+    "Email Address": email || "Not provided",
+    "Check-in Date": checkIn,
+    "Check-out Date": checkOut,
+    "Number of Guests": guests,
+    "Number of Rooms": rooms,
+    "Message / Special Requests": message || "None",
+    "_subject": `New Booking Request from ${name} - Jallabire Guest House`,
+    "_template": "table",
+    "_captcha": "false"
+  };
 
-  // Reset after a delay
-  setTimeout(() => {
-    submitBtn.innerHTML = originalText;
-    submitBtn.style.background = '';
-    submitBtn.disabled = false;
-    form.reset();
+  try {
+    const response = await fetch('https://formsubmit.co/ajax/jallabirerestpoint@gmail.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
 
-    alert('Thank you for your booking request! We will contact you soon to confirm your reservation.');
-  }, 2000);
+    const data = await response.json();
+
+    if (response.ok && (data.success === "true" || data.success === true || response.status === 200)) {
+      submitBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="20 6 9 17 4 12"/></svg>
+        Request Sent Successfully!
+      `;
+      submitBtn.style.background = '#2E7D32';
+
+      if (statusBox) {
+        statusBox.style.display = 'block';
+        statusBox.style.backgroundColor = '#E8F5E9';
+        statusBox.style.color = '#1B5E20';
+        statusBox.style.border = '1px solid #81C784';
+        statusBox.innerHTML = '<strong>Thank you!</strong> Your booking request has been forwarded to our team at <strong>jallabirerestpoint@gmail.com</strong>. We will get back to you shortly.';
+      }
+
+      form.reset();
+    } else {
+      throw new Error(data.message || 'Server error');
+    }
+  } catch (error) {
+    console.error('Submission error:', error);
+    submitBtn.innerHTML = `⚠️ Submission Failed`;
+    submitBtn.style.background = '#C62828';
+
+    if (statusBox) {
+      statusBox.style.display = 'block';
+      statusBox.style.backgroundColor = '#FFEBEE';
+      statusBox.style.color = '#B71C1C';
+      statusBox.style.border = '1px solid #EF9A9A';
+      statusBox.innerHTML = 'Unable to send right now. Please call us directly or email <a href="mailto:jallabirerestpoint@gmail.com" style="color: inherit; text-decoration: underline;">jallabirerestpoint@gmail.com</a>.';
+    }
+  } finally {
+    setTimeout(() => {
+      submitBtn.innerHTML = originalHtml;
+      submitBtn.style.background = '';
+      submitBtn.disabled = false;
+    }, 5000);
+  }
 }
+
