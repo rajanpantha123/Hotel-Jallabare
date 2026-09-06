@@ -1,0 +1,7 @@
+# Ignore raw camera files
+*.CR2
+*.cr2
+jallabire/
+images/jallabire/
+.DS_Store
+Thumbs.db
