@@ -74,8 +74,15 @@
        ============================================ -->
   <section class="hero" id="home">
     <div class="hero__bg">
-      <img src="images/hero-jallabire.jpg" alt="Hotel Jallabire Rest Point and Guest House in Bagnaskali-4, Ramdi, Palpa"
-        loading="eager">
+      <div class="hero__video-container">
+        <video class="hero__video active" id="heroVideo1" autoplay muted loop playsinline preload="auto">
+          <source src="videos/hero-bg-1.mp4" type="video/mp4">
+        </video>
+        <video class="hero__video" id="heroVideo2" muted loop playsinline preload="auto">
+          <source src="videos/hero-bg-2.mp4" type="video/mp4">
+        </video>
+      </div>
+      <img src="images/hotel-exterior-sunny.jpg" alt="Hotel Jallabire Rest Point and Guest House in Bagnaskali-4, Ramdi, Palpa" class="hero__fallback" loading="eager">
     </div>
     <div class="hero__overlay"></div>
     <div class="hero__pattern"></div>
@@ -95,6 +102,29 @@
         <a href="#contact" class="btn btn--primary btn--lg">Book a Room</a>
         <a href="#about" class="btn btn--secondary btn--lg">Explore Our Guest House</a>
       </div>
+    </div>
+
+    <!-- Interactive Background Video Switcher -->
+    <div class="hero__video-controls" id="heroVideoControls">
+      <div class="hero__video-tabs">
+        <button type="button" class="hero__video-tab active" data-video="1" id="videoTab1" aria-label="Switch to Hotel &amp; Grounds video">
+          <span class="hero__video-dot"></span>
+          <span class="hero__video-label">Hotel &amp; Grounds</span>
+        </button>
+        <button type="button" class="hero__video-tab" data-video="2" id="videoTab2" aria-label="Switch to Ramdi Bridge Balcony View video">
+          <span class="hero__video-dot"></span>
+          <span class="hero__video-label">Ramdi Bridge View</span>
+        </button>
+      </div>
+      <button type="button" class="hero__video-toggle" id="heroVideoToggle" aria-label="Pause background video" title="Pause / Play background video">
+        <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+          <rect x="5" y="4" width="4" height="16" rx="1"/>
+          <rect x="15" y="4" width="4" height="16" rx="1"/>
+        </svg>
+        <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style="display:none;">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+      </button>
     </div>
 
     <div class="hero__scroll">
@@ -713,25 +743,25 @@
           <div class="gallery__item-overlay"><span>Ramdi Bridge &amp; River</span></div>
         </div>
         <div class="gallery__item fade-in" data-category="guesthouse">
-          <img src="images/jallabire-exterior.jpg" alt="Hotel Jallabire Rest Point exterior" loading="lazy">
+          <img src="images/hotel-exterior-sunny.jpg" alt="Hotel Jallabire Rest Point exterior" loading="lazy">
           <div class="gallery__item-overlay"><span>Hotel Jallabire Exterior</span></div>
         </div>
-        <div class="gallery__item fade-in" data-category="guesthouse">
-          <img src="images/about-guesthouse.jpg" alt="Jallabire Rest Point with hills behind the guest house"
+        <div class="gallery__item fade-in" data-category="surroundings">
+          <img src="images/hotel-sign-mountain.jpg" alt="Hotel Jallabire Highway Entrance &amp; Palpa Hills"
             loading="lazy">
-          <div class="gallery__item-overlay"><span>Guest House &amp; Hills</span></div>
+          <div class="gallery__item-overlay"><span>Highway &amp; Green Hills</span></div>
         </div>
         <div class="gallery__item fade-in" data-category="rooms">
-          <img src="images/room-standard.jpg" alt="Clean standard room at Hotel Jallabire" loading="lazy">
-          <div class="gallery__item-overlay"><span>Standard Room</span></div>
+          <img src="images/room-standard.jpg" alt="Clean standard room with sofa and wood floor at Hotel Jallabire" loading="lazy">
+          <div class="gallery__item-overlay"><span>Standard Room with Sofa</span></div>
         </div>
         <div class="gallery__item fade-in" data-category="rooms">
-          <img src="images/room-twin.jpg" alt="Twin beds in a guest room at Hotel Jallabire" loading="lazy">
-          <div class="gallery__item-overlay"><span>Twin Room</span></div>
+          <img src="images/room-twin.jpg" alt="Spacious twin bedroom with attached private bathroom at Hotel Jallabire" loading="lazy">
+          <div class="gallery__item-overlay"><span>Twin Room (Attached Bath)</span></div>
         </div>
         <div class="gallery__item fade-in" data-category="rooms">
-          <img src="images/room-twin-door.jpg" alt="Comfortable twin room at Hotel Jallabire" loading="lazy">
-          <div class="gallery__item-overlay"><span>Guest Room</span></div>
+          <img src="images/room-bed-linen.jpg" alt="Comfortable bed with clean linen and purple curtains at Hotel Jallabire" loading="lazy">
+          <div class="gallery__item-overlay"><span>Cozy Bed &amp; Linens</span></div>
         </div>
         <div class="gallery__item fade-in" data-category="food">
           <img src="images/food-dalbhat.jpg?v=4" alt="Authentic Nepali Dal Bhat Tarkari Thali" loading="lazy">
@@ -753,18 +783,18 @@
           <img src="images/food-chiya.jpg" alt="Hot Nepali Spiced Masala Chiya Tea" loading="lazy">
           <div class="gallery__item-overlay"><span>Nepali Masala Chiya</span></div>
         </div>
-        <div class="gallery__item fade-in" data-category="food">
-          <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80"
-            alt="Seasonal local Palpali snacks" loading="lazy">
-          <div class="gallery__item-overlay"><span>Seasonal Local Snacks</span></div>
+        <div class="gallery__item fade-in" data-category="restaurant">
+          <img src="images/dining-room-tables.jpg"
+            alt="Clean and bright restaurant dining hall at Hotel Jallabire" loading="lazy">
+          <div class="gallery__item-overlay"><span>Restaurant Dining Hall</span></div>
         </div>
         <div class="gallery__item fade-in" data-category="restaurant">
-          <img src="images/dining-family.jpg" alt="Family enjoying a meal at Hotel Jallabire" loading="lazy">
-          <div class="gallery__item-overlay"><span>Indoor Dining</span></div>
+          <img src="images/dining-indoor.jpg" alt="Restaurant interior dining tables at Hotel Jallabire" loading="lazy">
+          <div class="gallery__item-overlay"><span>Dining Tables &amp; Seating</span></div>
         </div>
         <div class="gallery__item fade-in" data-category="rooms">
-          <img src="images/room-family.jpg" alt="Spacious family room at Hotel Jallabire" loading="lazy">
-          <div class="gallery__item-overlay"><span>Family Room</span></div>
+          <img src="images/room-family.jpg" alt="Spacious 4-bed family room at Hotel Jallabire" loading="lazy">
+          <div class="gallery__item-overlay"><span>Spacious Family Room</span></div>
         </div>
         <div class="gallery__item fade-in" data-category="guesthouse">
           <img src="images/jallabire-bus.jpg" alt="Highway travel stop with tourist bus at Hotel Jallabire"
@@ -775,14 +805,14 @@
           <img src="images/outdoor-dining.jpg" alt="Covered outdoor terrace dining at Hotel Jallabire" loading="lazy">
           <div class="gallery__item-overlay"><span>Outdoor Terrace Dining</span></div>
         </div>
-        <div class="gallery__item fade-in" data-category="restaurant">
-          <img src="images/jallabire-counter.jpg" alt="Snack counter and reception at Hotel Jallabire" loading="lazy">
-          <div class="gallery__item-overlay"><span>Reception &amp; Shop</span></div>
+        <div class="gallery__item fade-in" data-category="guesthouse">
+          <img src="images/reception-counter.jpg" alt="Front desk and refreshment counter at Hotel Jallabire" loading="lazy">
+          <div class="gallery__item-overlay"><span>Reception Desk &amp; Refreshments</span></div>
         </div>
         <div class="gallery__item fade-in" data-category="culture">
-          <img src="images/jallabire-hosts.jpg" alt="Warm Nepali hospitality at Hotel Jallabire reception"
+          <img src="images/host-namaste.jpg" alt="Warm Nepali hospitality at Hotel Jallabire reception"
             loading="lazy">
-          <div class="gallery__item-overlay"><span>Warm Hospitality &amp; Reception</span></div>
+          <div class="gallery__item-overlay"><span>Warm Namaste Hospitality</span></div>
         </div>
       </div>
     </div>
