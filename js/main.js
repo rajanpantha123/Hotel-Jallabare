@@ -366,6 +366,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
+
+  // ============================================
+  // BACKGROUND VIDEO RESILIENCE (Discover & Final CTA)
+  // ============================================
+  const bgVideos = document.querySelectorAll('video.final-cta__video, video.discover__video');
+  bgVideos.forEach(v => {
+    v.muted = true;
+    v.defaultMuted = true;
+    v.playsInline = true;
+
+    const onPlaying = () => v.classList.add('playing');
+    v.addEventListener('playing', onPlaying);
+    if (!v.paused && v.readyState >= 2) {
+      v.classList.add('playing');
+    }
+
+    const startPlay = () => {
+      const p = v.play();
+      if (p !== undefined) {
+        p.catch(() => {
+          // Fallback image remains visible
+        });
+      }
+    };
+
+    startPlay();
+
+    if ('IntersectionObserver' in window) {
+      const vObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            startPlay();
+          } else {
+            v.pause();
+          }
+        });
+      }, { threshold: 0.1 });
+      vObs.observe(v);
+    }
+  });
 });
 
 // ============================================
