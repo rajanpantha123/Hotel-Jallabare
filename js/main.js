@@ -337,6 +337,35 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // ============================================
+  // BOOK A ROOM & CTA SMOOTH SCROLL HANDLER
+  // ============================================
+    document.querySelectorAll('a[href="#contact"]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+          contactSection.scrollIntoView({ behavior: 'smooth' });
+          setTimeout(() => {
+            const guestNameInput = document.getElementById('guestName');
+            if (guestNameInput) {
+              guestNameInput.focus();
+            }
+          }, 600);
+        }
+      });
+    });
+
+    document.querySelectorAll('a[href="#about"]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const aboutSection = document.getElementById('about');
+        if (aboutSection) {
+          aboutSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
 });
 
 // ============================================

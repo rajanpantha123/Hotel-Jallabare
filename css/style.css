@@ -700,7 +700,8 @@ p {
     rgba(10, 10, 10, 0.30) 40%,
     rgba(38, 18, 7, 0.65) 100%
   );
-  z-index: 3;
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* Video switcher controls on Hero */
@@ -818,7 +819,8 @@ p {
   left: 0;
   right: 0;
   height: 6px;
-  z-index: 3;
+  z-index: 2;
+  pointer-events: none;
   background: repeating-linear-gradient(
     90deg,
     var(--terracotta) 0px,
@@ -834,7 +836,7 @@ p {
 
 .hero__content {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   text-align: center;
   color: var(--white);
   padding: calc(var(--nav-height) + 2rem) var(--space-lg) 3rem;
@@ -1370,7 +1372,7 @@ p {
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  height: 200px;
+  height: 330px;
   min-width: 0;
 }
 
@@ -1411,6 +1413,10 @@ p {
   border: 1px solid rgba(255, 255, 255, 0.2);
   pointer-events: none;
   z-index: 2;
+}
+
+.discover__image-host {
+  object-position: center 12% !important;
 }
 
 .discover__content {
@@ -2062,11 +2068,13 @@ textarea.form-control {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    to right,
-    rgba(30, 20, 15, 0.88),
-    rgba(60, 35, 25, 0.80)
+    135deg,
+    rgba(20, 15, 10, 0.78) 0%,
+    rgba(35, 25, 18, 0.65) 60%,
+    rgba(20, 15, 10, 0.78) 100%
   );
   z-index: 2;
+  pointer-events: none;
 }
 
 .final-cta__content {
@@ -2502,7 +2510,15 @@ textarea.form-control {
   }
 
   .discover__image {
-    height: 200px;
+    height: 220px;
+  }
+
+  .discover__image.discover__image--portrait {
+    height: 390px;
+    max-width: 320px;
+    width: 100%;
+    margin: 0 auto;
+    aspect-ratio: 3 / 4;
   }
 
   .lightbox__nav {
