@@ -215,125 +215,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================
-  // HERO BACKGROUND VIDEOS — Dual Player & Switcher
+  // HERO BACKGROUND VIDEO — Simple Autoplay
   // ============================================
   const heroVideo1 = document.getElementById('heroVideo1');
-  const heroVideo2 = document.getElementById('heroVideo2');
-  const videoTab1 = document.getElementById('videoTab1');
-  const videoTab2 = document.getElementById('videoTab2');
-  const videoToggle = document.getElementById('heroVideoToggle');
-  const iconPause = videoToggle ? videoToggle.querySelector('.icon-pause') : null;
-  const iconPlay = videoToggle ? videoToggle.querySelector('.icon-play') : null;
 
-  if (heroVideo1 && heroVideo2) {
-    let currentVideo = 1;
-    let isPaused = false;
-    let autoSwitchTimer = null;
-
-    function playVideoSafely(video) {
-      if (!video) return;
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Fallback handled smoothly by poster image if autoplay restricted
-        });
-      }
-    }
-
-    function switchHeroVideo(targetNum, manual = false) {
-      if (targetNum === currentVideo && !manual) return;
-
-      const outgoing = currentVideo === 1 ? heroVideo1 : heroVideo2;
-      const incoming = targetNum === 1 ? heroVideo1 : heroVideo2;
-      const activeTab = targetNum === 1 ? videoTab1 : videoTab2;
-      const inactiveTab = targetNum === 1 ? videoTab2 : videoTab1;
-
-      currentVideo = targetNum;
-
-      if (activeTab && inactiveTab) {
-        activeTab.classList.add('active');
-        inactiveTab.classList.remove('active');
-      }
-
-      if (!isPaused) {
-        incoming.currentTime = 0;
-        playVideoSafely(incoming);
-      }
-
-      incoming.classList.add('active');
-      outgoing.classList.remove('active');
-
-      setTimeout(() => {
-        if (currentVideo !== (outgoing === heroVideo1 ? 1 : 2)) {
-          outgoing.pause();
-        }
-      }, 1200);
-
-      resetAutoSwitchTimer();
-    }
-
-    function resetAutoSwitchTimer() {
-      clearTimeout(autoSwitchTimer);
-      if (isPaused) return;
-
-      const activeVideo = currentVideo === 1 ? heroVideo1 : heroVideo2;
-      const duration = (activeVideo.duration && !isNaN(activeVideo.duration) && activeVideo.duration > 3)
-        ? Math.max(activeVideo.duration * 1000 - 800, 7000)
-        : 12000;
-
-      autoSwitchTimer = setTimeout(() => {
-        const next = currentVideo === 1 ? 2 : 1;
-        switchHeroVideo(next, false);
-      }, duration);
-    }
-
-    if (videoTab1) {
-      videoTab1.addEventListener('click', () => switchHeroVideo(1, true));
-    }
-    if (videoTab2) {
-      videoTab2.addEventListener('click', () => switchHeroVideo(2, true));
-    }
-
-    if (videoToggle) {
-      videoToggle.addEventListener('click', () => {
-        isPaused = !isPaused;
-        const activeVideo = currentVideo === 1 ? heroVideo1 : heroVideo2;
-
-        if (isPaused) {
-          activeVideo.pause();
-          clearTimeout(autoSwitchTimer);
-          if (iconPause) iconPause.style.display = 'none';
-          if (iconPlay) iconPlay.style.display = 'block';
-          videoToggle.setAttribute('aria-label', 'Play background video');
-        } else {
-          playVideoSafely(activeVideo);
-          resetAutoSwitchTimer();
-          if (iconPause) iconPause.style.display = 'block';
-          if (iconPlay) iconPlay.style.display = 'none';
-          videoToggle.setAttribute('aria-label', 'Pause background video');
-        }
+  if (heroVideo1) {
+    heroVideo1.muted = true;
+    heroVideo1.playsInline = true;
+    const playPromise = heroVideo1.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay blocked — fallback image remains visible
       });
     }
 
-    heroVideo1.addEventListener('ended', () => {
-      if (!isPaused && currentVideo === 1) switchHeroVideo(2, false);
-    });
-    heroVideo2.addEventListener('ended', () => {
-      if (!isPaused && currentVideo === 2) switchHeroVideo(1, false);
-    });
-
-    playVideoSafely(heroVideo1);
-    heroVideo1.addEventListener('loadedmetadata', resetAutoSwitchTimer);
-    resetAutoSwitchTimer();
-
     document.addEventListener('visibilitychange', () => {
-      const activeVideo = currentVideo === 1 ? heroVideo1 : heroVideo2;
       if (document.hidden) {
-        activeVideo.pause();
-        clearTimeout(autoSwitchTimer);
-      } else if (!isPaused) {
-        playVideoSafely(activeVideo);
-        resetAutoSwitchTimer();
+        heroVideo1.pause();
+      } else {
+        heroVideo1.play().catch(() => {});
       }
     });
   }
